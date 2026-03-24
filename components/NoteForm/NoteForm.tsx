@@ -18,6 +18,8 @@ const initialValues: NoteFormValues = {
   tag: 'Todo',
 };
 
+const allowedTags: NoteTag[] = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
+
 interface NoteFormProps {
   onClose: () => void;
 }
@@ -28,7 +30,7 @@ const validationSchema = Yup.object().shape({
     .max(50, 'Max symbols reached')
     .required(),
   content: Yup.string().max(500, 'Max symbols reached'),
-  tag: Yup.string().required(),
+  tag: Yup.mixed<NoteTag>().oneOf(allowedTags, 'Invalid tag').required(),
 });
 
 export default function NoteForm({ onClose }: NoteFormProps) {
@@ -83,11 +85,11 @@ export default function NoteForm({ onClose }: NoteFormProps) {
         <div className={css.formGroup}>
           <label htmlFor="tag">Tag</label>
           <Field as="select" id="tag" name="tag" className={css.select}>
-            <option value="Todo">Todo</option>
-            <option value="Work">Work</option>
-            <option value="Personal">Personal</option>
-            <option value="Meeting">Meeting</option>
-            <option value="Shopping">Shopping</option>
+            {allowedTags.map((tag) => (
+              <option key={tag} value={tag}>
+                {tag}
+              </option>
+            ))}
           </Field>
           <ErrorMessage name="tag" className={css.error} component="span" />
         </div>

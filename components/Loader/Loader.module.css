@@ -2,7 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px 0;
+  width: 100%;
+  min-height: 50vh;
 }
 
 .spinner {
